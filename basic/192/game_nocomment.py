@@ -2,7 +2,8 @@ GAME_TITLE_LEN_MAX  = 20
 PLAYER_NAME_LEN_MAX = 15
 GAME_LEVEL_MIN      = 1
 GAME_LEVEL_MAX      = 9
-IS_DEV_MODE =True
+IS_DEV_MODE         = True
+
 if not IS_DEV_MODE: # release 버전의 코드가 작동
     # step1
     print( "Enjoy Custom Game world" )
@@ -42,11 +43,11 @@ if not IS_DEV_MODE: # release 버전의 코드가 작동
             continue    
         game_level = tmp
         break
-else:
-# 매번 입력받아서 테스트하기 시간이 많이 소요 ㅗ디므로 , 값을 고정하여 개발
-    gameTitle  = '테스트 게임'
-    player_name  ='guest'
-    game_level = 1
+else:# test or dev(개발) 버전으로 코드가 작동
+    gameTitle   = 'test game'
+    player_name = 'guest'
+    game_level  = 1
+
 # step 5
 print( '-'*20 )
 print( '현재 까지 입력 상황' )
@@ -54,67 +55,50 @@ print( 'gameTitle',   gameTitle )
 print( 'player_name', player_name )
 print( 'game_level',  game_level )
 print( '-'*20 )
+
 # step 6
-# 인트로 (가로길이 40칸)
-'''
-========================================
+print('='*40)
+print('+{0:^38}+'.format(gameTitle))
+print('+{0:^38}+'.format( 'lv : %s' % game_level ))
+print('+{0:^34}+'.format( '"%s"의 연대기' % player_name ))
+print('='*40)
+print('{0:^40}'.format('press any key!!'))
 
-+           게임제목(중앙정렬)           +
-+            lv 레벨값                  +
-+        "플레이어이름"의 연대기         +
+# step 7
+types = list('♠◆♥♣')
+nums  = list('A23456789')+['10']+list('JQK')
+cards = [ i+j for i in types for j in nums ]
+score_table = dict()
+for key in nums:score_table[ key ] = nums.index( key ) +1
+import random
+random.shuffle(cards)
+my_cards  = cards[:8:2]
+my_first_cards = my_cards[:2]
+com_cards = cards[1:9:2]
+com_first_cards= com_cards[:2]
 
-========================================
-           press any key !!
-'''
-print( '-'*40 )
-print( '+{0:^38}+'.format(gameTitle) )
-print( '+{0:^38}+'.format('lv : %s' % game_level) )
-print( '+{0:^34}+'.format('"%s의 연대기'% player_name) )
-print( '-'*40 )
-print( '{0:^40}'.format('press any key!!') )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+cnt = 0 # 카드를 추가로 준 횟수
+while True:
+    choice = input( '1. 카드를 더 받겠습니까? 아니면 2. 승부를 내겠습니까?' )
+    if choice == '1' and cnt <2:
+        cnt += 1
+        my_first_cards  = my_cards[:2+cnt]
+        com_first_cards = com_cards[:2+cnt]
+    elif choice == '2':
+        myScore  = 0
+        comScore = 0
+        for n in my_first_cards:  myScore += score_table[ n[1:] ]
+        for n in com_first_cards: comScore += score_table[ n[1:] ]
+        print('myScore',myScore)
+        print('comScore',comScore)
+        if myScore > comScore:
+            print('You Win, try again? 1.yes, 2.no')
+        elif myScore < comScore:
+            print('You Lose, try again? 1.yes, 2.no')
+        else:
+            print('무승부, try again? 1.yes, 2.no')
+        break
+    else:
+        print('정확하게 1 or 2를 입력하세요')
+        if cnt == 2:
+            print('이미 추가 카드를 다 받았습니다. 2번만 선택할수 있습니다.')
