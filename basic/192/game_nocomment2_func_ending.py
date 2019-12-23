@@ -199,5 +199,9 @@ def step7():
     # # 1) python 파일명.py로 구동하면 => __name__ => '__main__' 세팅됨
     # # 2) 누군가가 파일명.py를 가져와서 사용하면 => __name__ => '파일명'
     # print( '__name__ => ', __name__ )
-    # if __name__ == '__main__':
-main()
+print(__name__)
+if __name__ == '__main__':
+    main()
+else:
+    print('ssss')
+    \
